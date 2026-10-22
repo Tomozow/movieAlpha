@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moviealpha"
+version = "0.1.0"
+description = "MP4 の指定色をアルファチャンネルに置き換える簡易ツール"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "ffmpeg-python>=0.2.0",
+    "Pillow>=10.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[project.scripts]
+moviealpha = "moviealpha.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["moviealpha*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
