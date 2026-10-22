@@ -14,7 +14,16 @@ MP4 の指定色をアルファチャンネルに置き換える簡易ツール�
 
 処理の実体は [FFmpeg `colorkey`](https://ffmpeg.org/ffmpeg-filters.html#colorkey) です。フィルタグラフの組み立ては [ffmpeg-python](https://github.com/kkroening/ffmpeg-python) に合わせています。
 
-## 必要環境
+## ダウンロード（Windows）
+
+[Releases](https://github.com/tomozow/movieAlpha/releases) から zip をダウンロードして展開します。
+
+- `moviealpha-gui.exe` — ダブルクリックで画面が開きます（動画ファイルを exe にドロップしても開けます）
+- `moviealpha.exe` — コマンドライン版（下の「使い方」の `moviealpha` と同じ）
+
+どちらも [FFmpeg](https://ffmpeg.org/download.html) が PATH にある必要があります。
+
+## 必要環境（ソースから使う場合）
 
 - Python 3.10+
 - [FFmpeg](https://ffmpeg.org/download.html)（`ffmpeg` / `ffprobe` が PATH にあること）

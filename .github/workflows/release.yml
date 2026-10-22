@@ -1,0 +1,39 @@
+name: Release build
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install . pyinstaller
+      - name: Build exe
+        run: |
+          pyinstaller --onefile --name moviealpha moviealpha/__main__.py
+          pyinstaller --onefile --windowed --name moviealpha-gui moviealpha/gui_main.py
+          dist/moviealpha.exe --version
+      - name: Zip
+        shell: pwsh
+        run: |
+          $name = if ($env:GITHUB_REF_TYPE -eq "tag") { $env:GITHUB_REF_NAME } else { "dev" }
+          "ZIP=moviealpha-$name-win-x64.zip" >> $env:GITHUB_ENV
+          Compress-Archive -Path dist/moviealpha.exe, dist/moviealpha-gui.exe, README.md -DestinationPath "moviealpha-$name-win-x64.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: moviealpha-win-x64
+          path: ${{ env.ZIP }}
+      - name: Publish release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create ${{ github.ref_name }} ${{ env.ZIP }} --title "movieAlpha ${{ github.ref_name }}" --notes "zip を展開して moviealpha-gui.exe（画面で操作）または moviealpha.exe（コマンドライン）を実行してください。FFmpeg が PATH にある必要があります。"
