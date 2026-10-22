@@ -12,8 +12,8 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - run: pip install . pyinstaller
@@ -28,7 +28,7 @@ jobs:
           $name = if ($env:GITHUB_REF_TYPE -eq "tag") { $env:GITHUB_REF_NAME } else { "dev" }
           "ZIP=moviealpha-$name-win-x64.zip" >> $env:GITHUB_ENV
           Compress-Archive -Path dist/moviealpha.exe, dist/moviealpha-gui.exe, README.md -DestinationPath "moviealpha-$name-win-x64.zip"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: moviealpha-win-x64
           path: ${{ env.ZIP }}
